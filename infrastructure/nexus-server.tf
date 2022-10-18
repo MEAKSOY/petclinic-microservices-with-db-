@@ -2,7 +2,7 @@
 //Nexus server will run on Amazon Linux 2 with custom security group
 //allowing SSH (22) and TCP (8081) connections from anywhere.
 
-mykey              = "firstkey"
+mykey              = "petclinic-rancher.pem"
 ami                = "ami-0cff7528ff583bf9a"
 region             = "us-east-1"
 instance_type      = "t3a.medium"
@@ -54,7 +54,7 @@ resource "null_resource" "forpasswd" {
 
   # Do not forget to define your key file path correctly!
   provisioner "local-exec" {
-    command = "ssh -i ~/.ssh/${var.mykey}.pem -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${aws_instance.tf-nexus-server.public_ip} 'docker cp nexus:/nexus-data/admin.password  admin.password && cat /home/ec2-user/admin.password' > initialpasswd.txt"
+    command = "ssh -i ~/.ssh/${var.mykey} -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no ec2-user@${aws_instance.tf-nexus-server.public_ip} 'docker cp nexus:/nexus-data/admin.password  admin.password && cat /home/ec2-user/admin.password' > initialpasswd.txt"
   }
 }
 
